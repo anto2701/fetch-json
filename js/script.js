@@ -19,3 +19,49 @@ function showData(dataArray) {
 }
 
 // Escribe el código necesario para realizar el fetch al archivo con los datos y mostrar los estudiantes con la función showData
+/*fetch(DATA_URL)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`Network response was not ok ${response.statusText}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    showData(data);
+  })
+  .catch(error => {
+    console.error('Hubo un problema con la solicitud Fetch:', error);
+  });*/
+
+function getJsonData(DATA_URL){
+  let result = {};
+  return fetch(DATA_URL) 
+
+  .then(response => {
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw Error(response.statusText);
+    }
+  })
+
+  .then(function(response) {
+    result.status = 'success';
+    result.data = response;
+    return result;
+  })
+
+  .catch(function(error) {
+    result.status = 'error';
+    result.data = error;
+    return result;
+  });
+}
+    
+getJsonData(DATA_URL).then(function(resultObj){
+  if (resultObj.status === "success") {
+    showData(resultObj.data.students);
+  }
+})
+  
+  
